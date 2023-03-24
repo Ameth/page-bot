@@ -7,6 +7,7 @@ const ip = 'http://localhost'
 
 const URL_TO_CHECK = 'http://127.0.0.1:3000/' // URL to check
 const TIME_CHECK = 10000 //milisegundos
+const STOP_IN_LINE = true // true => Detener la comprobación una vez que la página este en línea.
 
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*')
@@ -23,9 +24,6 @@ async function checkWebSite(url) {
   try {
     const response = await fetch(url)
     if (response.status === 200) {
-      //   res.send('Página web en linea')
-      //   console.log('Página web en línea')
-      //   clearInterval(intervalId) // Habilitar esta linea para que se detenga cuando la página este en línea.
       return { success: true, message: 'Página web en línea' }
     } else {
       return {
@@ -36,7 +34,6 @@ async function checkWebSite(url) {
       }
     }
   } catch (err) {
-    // clearInterval(intervalId)
     // console.error(err)
     // console.log('La página no está en linea. Reintentando en 1 minuto.')
     return {
@@ -52,8 +49,8 @@ app.get('/check', (req, res) => {
     const intervalId = setInterval(async () => {
       const { success, message } = await checkWebSite(URL_TO_CHECK)
       console.log(message)
-      if (success) {
-        // clearInterval(intervalId) // Habilitar esta línea para detener la comprobación una vez que la página este en línea.
+      if (success && STOP_IN_LINE) {
+        clearInterval(intervalId)
       }
     }, TIME_CHECK)
   } catch (err) {
