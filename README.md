@@ -4,3 +4,8 @@
 ```
 npm run dev
 ```
+
+### Comprobar
+```
+http://localhost:8000/check
+```
