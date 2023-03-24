@@ -19,7 +19,7 @@ function convertTime() {
   return '' + TIME_CHECK / 1000
 }
 
-async function checkWebSite(url, intervalId = 0) {
+async function checkWebSite(url) {
   try {
     const response = await fetch(url)
     if (response.status === 200) {
